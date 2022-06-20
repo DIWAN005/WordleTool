@@ -1,3 +1,5 @@
+# Words originally sourced from https://github.com/dwyl/english-words
+
 from asyncore import write
 
 
