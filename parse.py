@@ -1,4 +1,5 @@
 # Words originally sourced from https://github.com/dwyl/english-words
+# Words in fiveLettersCommon.txt were sourced from https://github.com/charlesreid1/five-letter-words/blob/master/sgb-words.txt
 
 from asyncore import write
 
