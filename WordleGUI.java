@@ -4,15 +4,14 @@ import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class WordleGUI extends JFrame implements ActionListener
-{
+public class WordleGUI extends JFrame implements ActionListener {
     private static JPanel panel;
     private static JFrame frame;
     private static JLabel title;
     private static JLabel stats;
     private static JTextField userText1;
     private static JLabel[] labels;
-    private static WordleBackend game = new WordleBackend("words/fiveLetters.txt", 15920);
+    private static WordleBackend game = new WordleBackend("words/fiveLettersCommon.txt", 5757);
 
     public static Scanner scanner = new Scanner(System.in);
     public static final String ANSIReset = "\u001B[0m";
@@ -28,23 +27,23 @@ public class WordleGUI extends JFrame implements ActionListener
     static boolean winCheck;
     static String answerChosen;
 
-    public static void main (String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws FileNotFoundException {
         panel = new JPanel();
         frame = new JFrame();
-        frame.setSize(200, 300);
+        frame.setSize(220, 300);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setTitle("Wordle GUI");
         frame.setLocationRelativeTo(null);
         frame.add(panel);
 
         panel.setLayout(null);
-        title = new JLabel("Wordle: ");
+        title = new JLabel("WORDLE: ");
         title.setBounds(10, 20, 80, 25);
         panel.add(title);
 
         panel.setLayout(null);
         stats = new JLabel("Enter your guess: ");
-        title.setBounds(10, 50, 180, 25);
+        stats.setBounds(10, 50, 180, 25);
         panel.add(stats);
 
         userText1 = new JTextField();
@@ -58,8 +57,7 @@ public class WordleGUI extends JFrame implements ActionListener
         panel.add(button);
 
         labels = new JLabel[6];
-        for (int i = 0; i < 6; i++)
-        {
+        for (int i = 0; i < 6; i++) {
             labels[i] = new JLabel("<html><font size ='5' color=blue> ----- </font> <font");
             labels[i].setBounds(44, 80 + (i * 25), 80, 25);
             panel.add(labels[i]);
@@ -70,60 +68,45 @@ public class WordleGUI extends JFrame implements ActionListener
         startGame();
     }
 
-    public void actionPerformed(ActionEvent e)
-    {
-        buttonPressed();
+    public void actionPerformed(ActionEvent e) {
+        String guess = userText1.getText();
+        if (!(game.isValidWord(guess))) {
+            System.out.println("Invalid word");
+            return;
+        } else {
+            buttonPressed(guess);
+        }
     }
 
     public static void startGame() throws FileNotFoundException {
         game.loadWords();
         game.getNewWord();
         tries = 0;
-        System.out.println("Wordle: Type A Five Letter Word");
     }
 
-    public static void setNextLabel(String string){
+    public static void setNextLabel(String string) {
         labels[tries - 1].setText(string);
     }
 
-    public static void buttonPressed()
-    {
+    public static void buttonPressed(String guess) {
         userText1.setBounds(40, 80 + ((tries + 1) * 25), 80, 25);
-        String guess = userText1.getText();
-        if (!(game.isValidWord(guess)))
-        {
-            System.out.println("Invalid word");
-            return;
-        }
+        tries++;
         int[] correctLetters = game.whichLettersCorrect(guess);
-        if (game.hasWon(correctLetters))
-        {
+        if (game.hasWon(correctLetters)) {
             winCheck = true;
         }
-        if (winCheck || tries > 5)
-        {
-//            endGame();
-            return;
-        }
-
         String[] letterColors = new String[correctLetters.length];
-        for (int i = 0; i < letterColors.length; i++)
-        {
-            if (correctLetters[i] == 0)
-            {
+        for (int i = 0; i < letterColors.length; i++) {
+            if (correctLetters[i] == 0) {
                 letterColors[i] = "black";
             }
-            if (correctLetters[i] == 1)
-            {
+            if (correctLetters[i] == 1) {
                 letterColors[i] = "orange";
             }
-            if (correctLetters[i] == 2)
-            {
+            if (correctLetters[i] == 2) {
                 letterColors[i] = "green";
             }
         }
-        tries++;
-        System.out.println("Set colors to " + letterColors[0] + " " + letterColors[1] + " " + letterColors[2] + " " + letterColors[3] + " " + letterColors[4] + " User Input was" + guess);
         String finalString = (
                 "<html><font size='5' color=" + letterColors[0] + "> " + guess.charAt(0) + "</font> <font            " +
                         "<html><font size='5' color=" + letterColors[1] + "> " + guess.charAt(1) + "</font> <font            " +
@@ -134,22 +117,20 @@ public class WordleGUI extends JFrame implements ActionListener
 
         userText1.setText("");
 
-        for (int i = 0; i < correctLetters.length; i++)
-        {
-            if(correctLetters[i] == 0)
-            {
-                System.out.println(guess.charAt(i));
-            }
-            if(correctLetters[i] == 1)
-            {
-                System.out.print(ANSIYellow + guess.charAt(i) + ANSIReset);
-            }
-            if(correctLetters[i] == 2)
-            {
-                System.out.println(ANSIGreen + guess.charAt(i) + ANSIReset);
-            }
+        if (winCheck || tries > 5) {
+            endGame(winCheck, game.getCurrentWord());
+            return;
         }
+    }
 
+    public static void endGame(boolean winCheck, String currentWord) {
+        userText1.setEnabled(false);
+        userText1.setVisible(false);
 
+        if (!winCheck) {
+            stats.setText("<html><font size='3' color=red> " + "You lose. The correct answer was: " + new String(currentWord) + "</font> <font");
+        } else {
+            stats.setText("<html><font size='5' color=green> " + "You Win!" + "</font> <font");
+        }
     }
 }

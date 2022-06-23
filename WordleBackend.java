@@ -96,4 +96,9 @@ public class WordleBackend {
         }
         return true;
     }
+
+    public String getCurrentWord()
+    {
+        return currentWord;
+    }
 }
