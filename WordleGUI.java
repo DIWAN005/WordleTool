@@ -1,31 +1,22 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 public class WordleGUI extends JFrame implements ActionListener {
     private static JPanel panel;
     private static JFrame frame;
     private static JLabel title;
     private static JLabel stats;
+    private static JLabel invalidGuessMsg;
     private static JTextField userText1;
     private static JLabel[] labels;
+    private static JButton button;
     private static WordleBackend game = new WordleBackend("words/fiveLettersCommon.txt", 5757);
-
-    public static Scanner scanner = new Scanner(System.in);
-    public static final String ANSIReset = "\u001B[0m";
-    public static final String ANSIYellow = "\u001B[33m";
-    public static final String ANSIGreen = "\u001B[32m";
-
-    static String[] possibleWords;
     static int tries;
-    static int attempts;
-    static char[] input;
-    static long startTime;
-    static char[] answer;
     static boolean winCheck;
-    static String answerChosen;
+    static boolean gameOver;
 
     public static void main(String[] args) throws FileNotFoundException {
         panel = new JPanel();
@@ -51,7 +42,7 @@ public class WordleGUI extends JFrame implements ActionListener {
         userText1.setBounds(40, 80, 80, 25);
         panel.add(userText1);
 
-        JButton button = new JButton("Enter");
+        button = new JButton("Enter");
         button.setBounds(100, 20, 80, 25);
         button.addActionListener(new WordleGUI());
         panel.add(button);
@@ -63,15 +54,36 @@ public class WordleGUI extends JFrame implements ActionListener {
             panel.add(labels[i]);
         }
 
+        panel.setLayout(null);
+        invalidGuessMsg = new JLabel("<html><font size='3' color=red> " + "Invalid Guess" + "</font> <font");
+        invalidGuessMsg.setBounds(60, 230, 80, 25);
+        panel.add(invalidGuessMsg);
+        invalidGuessMsg.setVisible(false);
+
         frame.setVisible(true);
+
+        gameOver = false;
+        winCheck = false;
+        tries = 0;
 
         startGame();
     }
 
     public void actionPerformed(ActionEvent e) {
+        invalidGuessMsg.setVisible(false);
+        if(gameOver) {
+            try {
+                frame.dispose();
+                main(null);
+                return;
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
+        }
         String guess = userText1.getText();
+
         if (!(game.isValidWord(guess))) {
-            System.out.println("Invalid word");
+            invalidGuessMsg.setVisible(true);
             return;
         } else {
             buttonPressed(guess);
@@ -129,8 +141,13 @@ public class WordleGUI extends JFrame implements ActionListener {
 
         if (!winCheck) {
             stats.setText("<html><font size='3' color=red> " + "You lose. The correct answer was: " + new String(currentWord) + "</font> <font");
-        } else {
+        }
+        else {
             stats.setText("<html><font size='5' color=green> " + "You Win!" + "</font> <font");
         }
+        gameOver = true;
+        button.setBounds(100, 20, 80, 50);
+        button.setMargin(new Insets(0, 0, 0, 0));
+        button.setText("Play again");
     }
 }
