@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.FileNotFoundException;
+import java.util.Date;
 
 public class WordleGUI extends JFrame implements ActionListener {
     private static JPanel panel;
@@ -14,9 +15,15 @@ public class WordleGUI extends JFrame implements ActionListener {
     private static JLabel[] labels;
     private static JButton button;
     private static WordleBackend game = new WordleBackend("words/fiveLettersCommon.txt", 5757);
-    static int tries;
-    static boolean winCheck;
-    static boolean gameOver;
+    private static int tries;
+    private static boolean winCheck;
+    private static boolean gameOver;
+    private static long timer;
+
+    public WordleGUI()
+    {
+
+    }
 
     public static void main(String[] args) throws FileNotFoundException {
         panel = new JPanel();
@@ -94,6 +101,8 @@ public class WordleGUI extends JFrame implements ActionListener {
         game.loadWords();
         game.getNewWord();
         tries = 0;
+        Date d = new Date();
+        resetTimer();
     }
 
     public static void setNextLabel(String string) {
@@ -101,6 +110,8 @@ public class WordleGUI extends JFrame implements ActionListener {
     }
 
     public static void buttonPressed(String guess) {
+        guess = guess.toLowerCase();
+        resetTimer();
         userText1.setBounds(40, 80 + ((tries + 1) * 25), 80, 25);
         tries++;
         int[] correctLetters = game.whichLettersCorrect(guess);
@@ -140,7 +151,7 @@ public class WordleGUI extends JFrame implements ActionListener {
         userText1.setVisible(false);
 
         if (!winCheck) {
-            stats.setText("<html><font size='3' color=red> " + "You lose. The correct answer was: " + new String(currentWord) + "</font> <font");
+            stats.setText("<html><font size='3' color=red> " + new String(currentWord) + "</font> <font");
         }
         else {
             stats.setText("<html><font size='5' color=green> " + "You Win!" + "</font> <font");
@@ -149,5 +160,27 @@ public class WordleGUI extends JFrame implements ActionListener {
         button.setBounds(100, 20, 80, 50);
         button.setMargin(new Insets(0, 0, 0, 0));
         button.setText("Play again");
+    }
+
+    public long getTimer()
+    {
+        return timer;
+    }
+
+    public long getCurrentTime()
+    {
+        Date d = new Date();
+        return d.getTime();
+    }
+
+    public static void resetTimer()
+    {
+        Date d = new Date();
+        timer = d.getTime();
+    }
+
+    public static int getTries()
+    {
+        return tries;
     }
 }
