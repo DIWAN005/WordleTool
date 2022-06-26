@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class WordleBackend {
     private String fileName;
-    private String[] words;
+    private static String[] words;
     private String currentWord;
 
     public WordleBackend(String fileName, int numberOfWords)
@@ -41,7 +41,7 @@ public class WordleBackend {
         return currentWord;
     }
 
-    public boolean isValidWord(String guessedWord)
+    public static boolean isValidWord(String guessedWord)
     {
         for(int i = 0; i < words.length; i++)
         {
@@ -79,6 +79,7 @@ public class WordleBackend {
                 if (guessedWord.charAt(i) == currentWord.charAt(j) && correctLetters[i] != 2)
                 {
                     correctLetters[i] = 1;
+                    
                 }
             }
         }
