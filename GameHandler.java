@@ -6,7 +6,7 @@ public class GameHandler {
     private static SetupPage setup = new SetupPage();
     private static WordleGUI game = new WordleGUI();
     private static long currentTime;
-    private static long minuteInMilliseconds = 10000;
+    private static long minuteInMilliseconds = 60000;
 
     public static void main(String[] args) throws Exception {
         setup.main(null);
