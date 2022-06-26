@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="WordleTool:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/WordleTool_jar</output-path>
+    <root id="archive" name="WordleTool.jar">
+      <element id="module-output" name="WordleTool" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/pircbot.jar" path-in-jar="/" />
+      <element id="file-copy" path="$PROJECT_DIR$/pircbot.jar" />
+    </root>
+  </artifact>
+</component>

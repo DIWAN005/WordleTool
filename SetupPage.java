@@ -74,7 +74,7 @@ public class SetupPage {
                 if (!existingoAuth) {
                     String oAuth = oAuthInput.getText();
                     try {
-                        Files.writeString(setupPath, "oauth:" + oAuth);
+                        Files.writeString(setupPath, oAuth);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }

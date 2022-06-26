@@ -79,7 +79,7 @@ public class WordleBackend {
                 if (guessedWord.charAt(i) == currentWord.charAt(j) && correctLetters[i] != 2)
                 {
                     correctLetters[i] = 1;
-                    
+
                 }
             }
         }
