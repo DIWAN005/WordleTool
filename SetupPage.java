@@ -12,7 +12,6 @@ import java.util.Scanner;
 public class SetupPage {
     private static JPanel setupPanel;
     private static JFrame frame;
-    private static JLabel title;
     private static JLabel channelNameText;
     private static JTextField channelNameInput;
     private static JLabel oAuthText;

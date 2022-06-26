@@ -45,14 +45,16 @@ public class WordleGUI extends JFrame {
         panel.add(userText1);
 
         enterButton = new JButton("Enter");
+        enterButton.setMargin(new Insets(0, 0, 0, 0));
         enterButton.setBounds(100, 20, 80, 25);
         panel.add(enterButton);
+
         enterButton.addActionListener(new ActionListener (){
             public void actionPerformed(ActionEvent e) {
                 invalidGuessMsg.setVisible(false);
                 if (gameOver) {
+                    enterButton.setText("Enter");
                     try {
-                        frame.dispose();
                         main(null);
                         return;
                     } catch (FileNotFoundException ex) {
@@ -63,7 +65,6 @@ public class WordleGUI extends JFrame {
 
                 if (!(game.isValidWord(guess))) {
                     invalidGuessMsg.setVisible(true);
-                    return;
                 } else {
                     buttonPressed(guess);
                 }
@@ -152,8 +153,6 @@ public class WordleGUI extends JFrame {
             stats.setText("<html><font size='5' color=green> " + "You Win!" + "</font> <font");
         }
         gameOver = true;
-        enterButton.setBounds(100, 20, 80, 50);
-        enterButton.setMargin(new Insets(0, 0, 0, 0));
         enterButton.setText("Play again");
     }
 

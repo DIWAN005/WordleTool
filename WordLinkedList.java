@@ -1,4 +1,4 @@
-public class LinkedList {
+public class WordLinkedList {
     private GuessedWord head;
     private static int size = 0;
 
@@ -14,7 +14,7 @@ public class LinkedList {
         }
     }
 
-    public static void insert(LinkedList list, String word)
+    public static void insert(WordLinkedList list, String word)
     {
         GuessedWord new_node = new GuessedWord(word);
         new_node.next = null;
@@ -32,7 +32,7 @@ public class LinkedList {
         size++;
     }
 
-    public static LinkedList deleteWord(LinkedList list, String word)
+    public static WordLinkedList deleteWord(WordLinkedList list, String word)
     {
         GuessedWord currNode = list.head;
         GuessedWord prev = null;
@@ -61,7 +61,7 @@ public class LinkedList {
         return list;
     }
 
-    public static void increaseFrequency(LinkedList list, String word) {
+    public static void increaseFrequency(WordLinkedList list, String word) {
         GuessedWord currNode = list.head;
         boolean needToAddWord = true;
         while (currNode != null) {
@@ -78,7 +78,7 @@ public class LinkedList {
         }
     }
 
-    public static void printList(LinkedList list)
+    public static void printList(WordLinkedList list)
     {
         GuessedWord currNode = list.head;
 
@@ -95,7 +95,7 @@ public class LinkedList {
         System.out.println();
     }
 
-    public static String getHighestFrequency(LinkedList list)
+    public static String getHighestFrequency(WordLinkedList list)
     {
         GuessedWord currNode = list.head;
         String mostFreqWord = currNode.word;
@@ -115,7 +115,7 @@ public class LinkedList {
         return mostFreqWord;
     }
 
-    public static void clearLinkedList(LinkedList list)
+    public static void clearLinkedList(WordLinkedList list)
     {
         list.head = null;
         size = 0;

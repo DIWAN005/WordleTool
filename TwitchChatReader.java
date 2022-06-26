@@ -6,7 +6,8 @@ public class TwitchChatReader extends PircBot {
     private static final int PORT = 6667;
     private static  String OAuth = null;
     private static String channelName = null;
-    private static LinkedList guessedWords = new LinkedList();
+    private static WordLinkedList guessedWords = new WordLinkedList();
+    private static PlayerLinkedList playerList = new PlayerLinkedList();
     private static final String wordIdentifier = "!sw ";
     private static SetupPage setup;
 
@@ -68,14 +69,18 @@ public class TwitchChatReader extends PircBot {
         }
         if(parsedMessage != null)
         {
-            if(parsedMessage.length() == 5) {
-                LinkedList.increaseFrequency(guessedWords, parsedMessage);
-                LinkedList.printList(guessedWords);
+            if(parsedMessage.length() == 5 && WordleBackend.isValidWord(parsedMessage)) {
+                String deletedWord = PlayerLinkedList.replacePrevGuess(playerList, sender, parsedMessage);
+                if (deletedWord != null) {
+                    WordLinkedList.deleteWord(guessedWords, deletedWord);
+                }
+                WordLinkedList.increaseFrequency(guessedWords, parsedMessage);
+                WordLinkedList.printList(guessedWords);
             }
         }
     }
 
-    public LinkedList getGuessedWords()
+    public WordLinkedList getGuessedWords()
     {
         return guessedWords;
     }

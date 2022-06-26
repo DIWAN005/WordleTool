@@ -23,14 +23,14 @@ public class GameHandler {
                         break;
                     }
                 }
-                LinkedList guessedWords = reader.getGuessedWords();
+                WordLinkedList guessedWords = reader.getGuessedWords();
                 if (guessedWords.getSize() == 0) {
                     game.resetTimer();
                     continue;
                 }
-                String guess = LinkedList.getHighestFrequency(guessedWords);
+                String guess = WordLinkedList.getHighestFrequency(guessedWords);
                 game.buttonPressed(guess);
-                LinkedList.clearLinkedList(guessedWords);
+                WordLinkedList.clearLinkedList(guessedWords);
             }
         }
     }
