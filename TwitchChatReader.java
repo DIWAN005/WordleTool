@@ -1,29 +1,30 @@
 import org.jibble.pircbot.*;
 
-import java.io.FileNotFoundException;
-import java.util.Date;
-
 public class TwitchChatReader extends PircBot {
 
     private static final String ADDRESS = "irc.twitch.tv";
     private static final int PORT = 6667;
-    private static final String OAUTH = "oauth:tzfikt8wosnxgviv76udidn867pt2w";
+    private static  String OAuth = null;
+    private static String channelName = null;
     private static LinkedList guessedWords = new LinkedList();
     private static final String wordIdentifier = "!sw ";
+    private static SetupPage setup;
 
     public TwitchChatReader() {
 
     }
 
     public static void main(String[] args) throws Exception {
+        OAuth = setup.getoAuth();
+        channelName = setup.getChannelName();
         TwitchChatReader bot = new TwitchChatReader();
         bot.setVerbose(true); // Enable debugging input
 
-        bot.setName("itsskydonut");
-        bot.setLogin("itsskydonut");
+        bot.setName("StreamyWordle");
+        bot.setLogin("StreamyWordle");
 
         try {
-            bot.connect(ADDRESS, PORT, OAUTH);
+            bot.connect(ADDRESS, PORT, OAuth);
         }
         catch (NickAlreadyInUseException e) {
             System.out.println("ERROR: Nickname in use");
@@ -37,8 +38,8 @@ public class TwitchChatReader extends PircBot {
     @Override
     protected void onConnect() {
         System.out.println("Connected!");
-        joinChannel("#scientifix");
-        sendMessage("#scientifix", "Hello, I'm StreamyWordle! To play, type !sw and your 5-letter guess separated by a space.");
+        joinChannel("#" + channelName);
+        sendMessage("#" + channelName, "Hello, I'm StreamyWordle! To play, type !sw and your 5-letter guess separated by a space.");
         super.onConnect();
     }
 
